@@ -1,9 +1,10 @@
 const express = require('express');
+const fs = require('fs');
 
 const apiRouter = require('./api');
 
 const app = express();
-const port = 3333;
+let port;
 
 app.get('/', (req, res) => {
     // send public/index.html file
@@ -11,6 +12,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', apiRouter);
+
+let data = fs.readFileSync('preferences.json');
+let preferences = JSON.parse(data);
+
+port = preferences.port;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
