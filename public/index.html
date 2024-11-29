@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jaiden</title>
+</head>
+<style>
+    body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 80vw;
+        height: 100vh;
+        margin-left: 10vw;
+        margin-right: 10vw;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    a {
+        text-decoration:underline;
+        color: #000000;
+        transition: 0.3s;
+        position: relative;
+        display: inline-block;
+        margin-right: 0.3rem;
+        margin-left: 0.3rem;
+    }
+
+    a:hover {
+        transform: scale(1.02);
+    }
+
+    a:first-child {
+        margin-left: 0;
+    }
+
+    a:last-child {
+        margin-right: 0;
+    }
+
+</style>
+<body>
+    <div class="container">
+        <div>
+            <h1>jaiden grimminck.</h1>
+            <h2 id="location">location</h2>
+            <h2>student and developer</h2>
+            <h3><a href="https://www.linkedin.com/in/jaidengrimminck/" target="_blank">linkedin</a> <a href="https://github.com/jaidenagrimminck" target="_blank">github</a></h3>
+        </div>
+    </div>
+
+    <script>
+        const api = "/api";
+
+        fetch(api)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("location").innerHTML = (data.city + ", " + (data.country == "US" ? data.state : data.country)).toLowerCase();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    </script>
+</body>
+</html>
