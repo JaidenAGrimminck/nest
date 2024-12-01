@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="constellation.css">
+        <!--prism-->
+        <link rel="stylesheet" href="/prism/prism.css">
+    </head>
+    <body>
+        <!--If you see this comment, ping me on Slack to redo this in React.-->
+        <div class="container">
+            <header class="title">
+                <h1>constellation</h1>
+                <h2>how to</h2>
+            </header>
+            <div class="section">
+                <div class="section-content">
+                    <i>this guide is a bit scuffed, but it should be sufficient. if you have any questions, feel free to ask me on slack.</i><br><br>
+                </div>
+                <div class="section-header">
+                    <h3>setting up nest</h3>
+                    <p><i>if you're going to host the server locally, skip this section.</i></p>
+                </div>
+                <div class="section-content">
+                    first, we want to get <a href="https://hackclub.app/">nest</a> set up.<br>
+
+                    as a first step, we need to setup our ssh keys.<br>
+
+                    you can run the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">ssh-keygen -t ed25519</code></pre><br>
+                    <i>accept defaults by just clicking enter.</i><br><br>
+
+                    if you're on macos/linux, you can run the following command to get the info you need:<br>
+                    <pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre><br>
+
+                    if you're on windows, you can run the following command to get the info you need:<br>
+                    <pre><code class="language-bash">type C:\Users\[username]\.ssh\id_ed25519.pub</code></pre>
+                    <i>replace [username] with your username</i><br><br>
+
+                    we'll use this info in a second.<br><br>
+
+
+                    you'll want to open the hackclub slack, and open the <pre class="pre-inline">#constellation</pre> channel.<br>
+
+                    then, at the top bar, click on the "Nest Channel README" tab.<br>
+                    click on the <pre class="pre-inline">@Quetzal</pre> and click on "message".<br><br>
+
+                    there should be a sign up link there. fill out the form, and copy and paste that info you got earlier into the <pre class="pre-inline">Public SSH Key</pre> input of the form.<br><br>
+
+                    if you fullfill the requirements (that is, being a teen), you should get a dm on slack later saying that your account has been created. make sure you go through each step.<br><br>
+
+                    once this is done, you can run the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">ssh [username]@hackclub.app</code></pre>
+
+                    where [username] is your username that you said on the form.<br><br>
+
+                    for example, my username is <pre class="pre-inline">jaiden</pre>, so i would run:<br>
+                    <pre><code class="language-bash">ssh jaiden@hackclub.app</code></pre><br>
+
+                    it may ask you about a fingerprint, just type <pre class="pre-inline">yes</pre> and press enter.<br><br>
+
+                    you should now be in your server! put this aside for now, we'll come back to it later.<br><br>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    <h3>setting up the project</h3>
+                </div>
+                <div class="section-content">
+                    for this project, we'll be using <a href="https://expressjs.com/">express</a> to create our server.<br><br>
+
+                    first, we'll want to make sure we have node.js installed. (make sure you run this on your local machine, not on the nest server). you can check by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">node -v</code></pre><br>
+
+                    if you don't have it installed, you can download it <a href="https://nodejs.org/en/">here</a>.<br><br>
+
+                    next, we'll want to create a new directory for our project. you can do this by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">mkdir constellation</code></pre><br>
+
+                    then, we'll want to navigate into that directory. you can do this by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">cd constellation</code></pre><br>
+
+                    we first need to setup the project. you can do this by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">npm init -y</code></pre><br>
+
+                    next, we'll want to install express. you can do this by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">npm install express</code></pre><br>
+
+
+                    once done, open up this folder in a code editor like <a href="https://code.visualstudio.com/">visual studio code</a> or some other editor.<br><br>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    <h3>creating the server</h3>
+                </div>
+                <div class="section-content">
+                    first, we'll want to create some new files, named <pre class="pre-inline">app.js</pre>, <pre class="pre-inline">constellation.json</pre>, and <pre class="pre-inline">index.html</pre><br>
+                    
+                    in <pre class="pre-inline">app.js</pre>, we'll first want to import express. you can do this by adding the following code:<br>
+                    <pre><code class="language-javascript">const express = require('express');</code></pre><br>
+
+                    this will import express into our project, and allow us to create the server quickly.<br><br>
+
+                    right now, we need to add some different routes to our server. whenever you go to a website, you're pretty much being routed around by the server depending on whatever you add after the domain.<br><br>
+
+                    for example, if i go to <pre class="pre-inline">https://google.com</pre>, i'm going to the root of the website. if i go to <pre class="pre-inline">https://google.com/search</pre>, i'm going to the search page of the website.<br><br>
+
+                    additionally, there's a concept called <pre class="pre-inline">GET</pre> and <pre class="pre-inline">POST</pre> requests (there's a few more, but these are probably the two most important ones). <pre class="pre-inline">GET</pre> requests are when you're just getting data from the server, and <pre class="pre-inline">POST</pre> requests are when you're sending data to the server.<br><br>
+
+                    we'll want to add a <pre class="pre-inline">GET</pre> request to our server, to the base root. in express (and most other node.js servers), this is at the <pre class="pre-inline">/</pre> route.<br><br>
+
+                    you can do this by adding the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    <pre><code class="language-javascript">app.get('/', (req, res) => {
+    res.send("hello world!");
+});</code></pre><br>
+
+                    this will send "hello world!" to the user whenever they go to the root of the website.<br><br>
+
+                    finally, we'll want to start the server, so we can actually see the website. you can do this by adding the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    <pre><code class="language-javascript">const port = 3000;
+app.listen(port, () => {
+    console.log(`server started on port ${port}`);
+});</code></pre><br>
+
+                    to try this out locally, you can run the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">node app.js</code></pre><br>
+
+                    you should see <pre class="pre-inline">server started on port 3000</pre> in the terminal. you can then go to <pre class="pre-inline">http://localhost:3000</pre> in your browser to see the website.<br><br>
+
+                    if you see <pre class="pre-inline">hello world!</pre>, then you've done everything correctly!<br><br>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    <h3>adding some content</h3>
+                </div>
+                <div class="section-content">
+                    now that we have the server setup, we can add some content to the website.<br><br>
+
+                    first, we'll want to add some html to <pre class="pre-inline">index.html</pre>. you can add the following code to <pre class="pre-inline">index.html</pre>:<br>
+                    <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+    &lt;head&gt;    
+        &lt;meta charset="UTF-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;title&gt;Document&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;hello world!&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre><br>
+
+                    this will add a title of "Document" and a heading of "hello world!" to the website.<br><br>
+
+                    next, we'll want to add some code to <pre class="pre-inline">app.js</pre> to send this file over to anyone who goes to the website. you can add the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    <pre><code class="language-javascript">app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});</code></pre><br>
+
+                    this will send the <pre class="pre-inline">index.html</pre> file (in the directory that you're running the code in, hence the <pre class="pre-inline">__dirname</pre>) to the user whenever they go to the root of the website.<br><br>
+
+                    you can run the same command as before to start the server<br><br>
+                    <pre><code class="language-bash">node app.js</code></pre><br>
+                    and you should see the same website as before, but with the heading "hello world!"<br><br>
+
+                    you can add more html to the file if you want, but we're going to go a little further before returning back to the website to allow it to update based on our data.<br><br>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>adding <pre class="pre-inline">/api</pre></h3>
+                </div>
+                <div class="section-content">
+                    we're going to add a new route to our server, <pre class="pre-inline">/api</pre>. this will be a <pre class="pre-inline">GET</pre> request, and will send a json file to the user.<br><br>
+
+                    if you haven't seen already, we have a file named <pre class="pre-inline">constellation.json</pre>. this file will contain the data that we want to send to the user for the constellation.<br><br>
+
+                    we'll start off by filling in the file with some data. follow the following format for <pre class="pre-inline">constellation.json</pre>:<br>
+                    <pre><code class="language-json">{
+    "city": "[your closest city]",
+    "state": "[your state/province/territory within your country]",
+    "country": "[your country's two letter code]",
+    "slack_id": "[your slack id, see #whats-my-slack-id in the slack]",
+    "extra": "[add anything here! could be a fun fact or a joke]"
+}
+</code></pre><br>
+
+                    this will be the data that we send to the user whenever they go to <pre class="pre-inline">/api</pre>.<br><br>
+
+                    next, we'll want to add the route to <pre class="pre-inline">app.js</pre>. you can do this through a similar method as before, but we're gonna learn a different way to do it.<br><br>
+
+                    we're going to read the file, parse the json, then send the json itself. (yeah, it's inefficient, but it's a good way to learn how to do it).<br><br>
+
+                    first, we'll need to import the <pre class="pre-inline">fs</pre> module. you can do this by adding the following code to <pre class="pre-inline">app.js</pre> at the very top:<br>
+                    <pre><code class="language-javascript">const fs = require('fs');</code></pre><br>
+                    then, we'll want to add the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    <pre><code class="language-javascript">app.get('/api', (req, res) => {
+    const data = fs.readFileSync(__dirname + '/constellation.json');
+
+    res.json(JSON.parse(data));
+});</code></pre><br>
+
+                    this will read the json file with fs, parse it with <pre class="pre-inline">JSON.parse</pre>, then send it to the user with <pre class="pre-inline">res.json</pre> (specifically meant to send json objects).<br><br>
+                    
+                    if we wanted to save time, then we could also do this:
+                    <pre><code class="language-javascript">app.get('/api', (req, res) => {
+    res.json({
+        name: "jaiden",
+        city: "some city",
+        state: "some state",
+        //... etc
+    });
+});</code></pre><br>
+
+                    this would send the json object directly to the user, without needing to read from a file. though, by reading from a file, we're able to edit the file while the server is running (if we want to make any changes)<br><br>
+
+                    you can run the same command as before to start the server<br><br>
+                    <pre><code class="language-bash">node app.js</code></pre><br>
+                    
+                    if you go to <pre class="pre-inline">http://localhost:3000/constellation</pre>, you should see the json object that you put in the file!<br><br>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <h3>updating the website using api</h3>
+                </div>
+                <div class="section-content">
+                    now that we have the api setup, we can update the website to show the data that we have in the json file.<br><br>
+
+                    we'll want to add some code to <pre class="pre-inline">index.html</pre> to show the data. you can add the following code to <pre class="pre-inline">index.html</pre> in the <pre class="pre-inline">body</pre> section:<br>
+                    <pre><code class="language-html">&lt;h1 id="name"&gt;&lt;/h1&gt;
+&lt;p id="city"&gt;&lt;/p&gt;
+&lt;p id="state"&gt;&lt;/p&gt;
+&lt;p id="country"&gt;&lt;/p&gt;
+&lt;p id="extra"&gt;&lt;/p&gt;
+</code></pre><br>
+
+                    this will add some elements to the website that we can update with the data from the json file.<br><br>
+
+                    we'll try out updating the website with the data on the frontend, to learn.
+
+                    we'll want to add in a script to the <pre class="pre-inline">index.html</pre> file to fetch the data from the api. you can add the following code to <pre class="pre-inline">index.html</pre> in the <pre class="pre-inline">head</pre> section:<br>
+                    <pre><code class="language-javascript">&lt;script&gt;
+// when the document is loaded...
+document.onload = () => {
+    // fetch the data from the api
+    fetch('/api')
+        .then(res => res.json()) // then, once we get the data, parse it as json
+        .then(data => { // then, once we have the data...
+            document.getElementById('name').innerText = data.name;
+            document.getElementById('city').innerText = data.city;
+            document.getElementById('state').innerText = data.state;
+            document.getElementById('country').innerText = data.country;
+            document.getElementById('extra').innerText = data.extra;
+
+            // update the elements on the website with the data from the json file
+        });
+}
+&lt;/script&gt;</code></pre><br>
+
+                    this will fetch the data from the api, then update the elements on the website with the data from the json file.<br><br>
+                    now if we restart the server, and go to <pre class="pre-inline">http://localhost:3000</pre>, we should see the data from the json file on the website!<br><br>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>putting the website onto nest</h3>
+                </div>
+                <div class="section-content">
+                    now that we have the website setup, we can put it onto nest.<br><br>
+
+                    since your amazing code should be shared with the world, we can upload it to github! <br/>
+                    we'll want to quickly make a <pre class="pre-inline">.gitignore</pre> file to ignore the <pre class="pre-inline">node_modules</pre> folder. you can do this by running the following command in terminal or windows powershell:<br>
+                    <pre><code class="language-bash">echo "node_modules" > .gitignore</code></pre><br>
+                    
+                    if you're unfamiliar with git, you can learn more <a href="https://git-scm.com/book/en/v2">here</a>. there's also an option to upload the code when you create a new repository, and there's also on the sidebar of vscode a menu that can help you with uploading the repository to github. if you do the drag-and-drop method, just make sure to click the "x" next to the node_modules as to not upload them.<br><br>
+
+                    once you have the code on github, open the shell that's connected to the nest server.<br><br>
+
+                    run the following command in the shell:<br>
+                    <pre><code class="language-bash">git clone https://github.com/[your username]/[your github repository name].git</code></pre><br>
+
+                    this will clone the repository onto the server.<br><br>
+
+                    we'll then run the following command to open up a new shell:<br>
+                    <pre><code class="language-bash">tmux</code></pre><br>
+
+                    then, we'll want to navigate into the directory that we just cloned. you can do this by running the following command in the shell:<br>
+                    <pre><code class="language-bash">cd [your github repository name]</code></pre><br>
+
+                    then, we'll want to install the dependencies. you can do this by running the following command in the shell:<br>
+                    <pre><code class="language-bash">npm install</code></pre><br>
+
+                    finally, we'll want to start the server. you can do this by running the following command in the shell:<br>
+                    <pre><code class="language-bash">node app.js</code></pre><br>
+
+                    to close this, we'll hit <pre class="pre-inline">ctrl+b</pre>, then just hit the <pre class="pre-inline">d</pre> key.<br><br>
+                    
+                    then, we'll want to edit the caddyfile. you can do this by running the following command in the shell:<br>
+                    <pre><code class="language-bash">nano /etc/caddy/Caddyfile</code></pre><br>
+
+                    you'll want your caddyfile to look something like this:<br>
+                    <pre><code class="language-bash">
+{
+    admin off
+}
+http://[your username].hackclub.app {
+	bind unix/.[your username].hackclub.app.webserver.sock|777
+	root * /home/[your username]/pub
+	reverse_proxy :3222
+}
+</code></pre>
+            Once done and saved with <pre class="pre-inline">ctrl+x</pre>, you can run the following command in the shell:<br>
+            <code class="language-bash">systemctl --user restart caddy</code><br><br>
+
+            you should now be able to go to <pre class="pre-inline">https://[your username].hackclub.app</pre> and see your website! you can also see your constellation endpoint at <div class="pre-inline">[your username].hackpad.app/api</div><br><br>
+
+            if you want to stop the server/restart it, you can run the following command in the shell:<br>
+            <pre><code class="language-bash">tmux attach</code></pre><br>
+            then, you can hit <pre class="pre-inline">ctrl+c</pre> to stop the server, or <pre class="pre-inline">node app.js</pre> to restart it.<br><br>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h3>conclusion</h3>
+            </div>
+            <div class="section-content">
+                and that's it! you've created a website that can be hosted on nest, and you've learned how to use express to create a server, how to use fs to read files, and how to use fetch to get data from an api.<br><br>
+
+                if you have any questions, feel free to ask me on slack at <pre class="pre-inline">@Jaiden G</pre> (the one with the minature lighthouse in the pfp)! i'm always happy to help.<br><br>
+
+                <i>if you see this comment, ping me on Slack to redo this in React.</i><br><br><br>
+
+                - <a href="/" target="_blank">jaiden</a>
+        </div>
+
+        <script src="/prism/prism.js"></script>
+    </body>
+</html>

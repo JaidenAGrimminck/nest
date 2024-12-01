@@ -11,7 +11,14 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/constellation', (req, res) => {
+    res.sendFile(__dirname + '/public/constellation/constellation.html');
+})
+
 app.use('/api', apiRouter);
+
+// static is public directory
+app.use(express.static('public'));
 
 let data = fs.readFileSync('preferences.json');
 let preferences = JSON.parse(data);
