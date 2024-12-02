@@ -42,7 +42,7 @@
                     we'll use this info in a second.<br><br>
 
 
-                    you'll want to open the hackclub slack, and open the <pre class="pre-inline">#constellation</pre> channel.<br>
+                    you'll want to open the hackclub slack, and open the <pre class="pre-inline">#nest</pre> channel.<br>
 
                     then, at the top bar, click on the "Nest Channel README" tab.<br>
                     click on the <pre class="pre-inline">@Quetzal</pre> and click on "message".<br><br>
@@ -154,7 +154,22 @@ app.listen(port, () => {
 
                     this will add a title of "Document" and a heading of "hello world!" to the website.<br><br>
 
-                    next, we'll want to add some code to <pre class="pre-inline">app.js</pre> to send this file over to anyone who goes to the website. you can add the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    normally, if you're using the standard <pre class="pre-inline">node:http</pre> module, you'd have to read the file like so:
+                    <pre><code class="language-javascript">const fs = require('fs');
+const http = require('http');
+// ...
+// call this whenever the node server gets a request to "/"
+function get(req, res) {
+    const fileData = fs.readFileSync(__dirname + '/index.html');
+    res.write(fileData);
+    res.end();
+}
+// ...
+</code></pre><br>
+
+                    but luckily, express has a built-in function to send files.
+
+                    we'll want to add this code to <pre class="pre-inline">app.js</pre> to send this file over to anyone who goes to the website. you can add the following code to <pre class="pre-inline">app.js</pre>:<br>
                     <pre><code class="language-javascript">app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });</code></pre><br>
@@ -189,22 +204,18 @@ app.listen(port, () => {
 
                     this will be the data that we send to the user whenever they go to <pre class="pre-inline">/api</pre>.<br><br>
 
-                    next, we'll want to add the route to <pre class="pre-inline">app.js</pre>. you can do this through a similar method as before, but we're gonna learn a different way to do it.<br><br>
+                    next, we'll want to add the route to <pre class="pre-inline">app.js</pre>.<br><br>
 
-                    we're going to read the file, parse the json, then send the json itself. (yeah, it's inefficient, but it's a good way to learn how to do it).<br><br>
-
-                    first, we'll need to import the <pre class="pre-inline">fs</pre> module. you can do this by adding the following code to <pre class="pre-inline">app.js</pre> at the very top:<br>
-                    <pre><code class="language-javascript">const fs = require('fs');</code></pre><br>
-                    then, we'll want to add the following code to <pre class="pre-inline">app.js</pre>:<br>
+                    we can do this through a similar method as before! you can add the following code to <pre class="pre-inline">app.js</pre>:<br>
                     <pre><code class="language-javascript">app.get('/api', (req, res) => {
-    const data = fs.readFileSync(__dirname + '/constellation.json');
-
-    res.json(JSON.parse(data));
+    res.sendFile(__dirname + '/constellation.json');
 });</code></pre><br>
 
-                    this will read the json file with fs, parse it with <pre class="pre-inline">JSON.parse</pre>, then send it to the user with <pre class="pre-inline">res.json</pre> (specifically meant to send json objects).<br><br>
+                    this will send the file to the user and handle all the little bits with saying it's a json file and more. <br/>
                     
-                    if we wanted to save time, then we could also do this:
+                    with <pre class="pre-inline">res.json</pre> though, we can specifically use it to send json objects.<br><br>
+                    
+                    for example, if we wanted to save time, then we could also do this:
                     <pre><code class="language-javascript">app.get('/api', (req, res) => {
     res.json({
         name: "jaiden",
@@ -219,7 +230,7 @@ app.listen(port, () => {
                     you can run the same command as before to start the server<br><br>
                     <pre><code class="language-bash">node app.js</code></pre><br>
                     
-                    if you go to <pre class="pre-inline">http://localhost:3000/constellation</pre>, you should see the json object that you put in the file!<br><br>
+                    if you go to <pre class="pre-inline">http://localhost:3000/api</pre>, you should see the json object that you put in the file!<br><br>
             </div>
             
             <div class="section">
