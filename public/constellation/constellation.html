@@ -324,9 +324,9 @@ http://[your username].hackclub.app {
 }
 </code></pre>
             Once done and saved with <pre class="pre-inline">ctrl+x</pre>, you can run the following command in the shell:<br>
-            <code class="language-bash">systemctl --user restart caddy</code><br><br>
+            <pre><code class="language-bash">systemctl --user restart caddy</code></pre><br><br>
 
-            you should now be able to go to <pre class="pre-inline">https://[your username].hackclub.app</pre> and see your website! you can also see your constellation endpoint at <div class="pre-inline">[your username].hackpad.app/api</div><br><br>
+            you should now be able to go to <pre class="pre-inline">https://[your username].hackclub.app</pre> and see your website! you can also see your constellation endpoint at <pre class="pre-inline">[your username].hackpad.app/api</pre><br><br>
 
             if you want to stop the server/restart it, you can run the following command in the shell:<br>
             <pre><code class="language-bash">tmux attach</code></pre><br>
@@ -335,6 +335,42 @@ http://[your username].hackclub.app {
             additionally, if you want to update the website, just navigate to the directory that you cloned, and run the following command in the shell:<br>
             <pre><code class="language-bash">git pull</code></pre><br>
             then, with the above commands, you can restart the server to see the changes.<br><br>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h3>adding a custom domain via name.com</h3>
+            </div>
+            <div>
+                if you don't already know, you can setup a free domain (you may actually have to pay like a dollar) in name.com via the student github education pack. you can learn more <a href="https://education.github.com/pack">here</a>.<br><br>
+
+                once you have the domain, open the domain details, then find "manage dns records".<br><br>
+
+                remove any existing records, and add the following records:<br>
+                <pre><code class="language-bash">
+- CNAME
+- Host: [leave blank]
+- Answer: [your username].hackclub.app
+- TTL: 300
+</code></pre><br>
+
+                now, open the shell that's connected to the nest server.<br><br>
+
+                open up the caddyfile by running the following command in the shell:<br>
+                <pre><code class="language-bash">nano Caddyfile</code></pre><br>
+
+                You'll want to add at the bottom of the file:<br>
+                <pre><code class="language-bash">[your domain] {
+    bind unix/.[your domain, so for mine, jaiden.rocks].webserver.sock|777
+    root * /home/[your username]/pub
+    reverse_proxy :3222
+}</code></pre><br>
+
+                then, you can run the following command in the shell:<br>
+                <pre><code class="language-bash">systemctl --user restart caddy</code></pre><br><br>
+
+                you should now be able to go to <pre class="pre-inline">https://[your domain]</pre> and see your website! you can also see your constellation endpoint at <pre class="pre-inline">[your domain]/api</pre><br><br>
             </div>
         </div>
 
